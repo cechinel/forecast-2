@@ -5,12 +5,12 @@
         sass = require('gulp-sass'),
         uglify = require('gulp-uglify'),
         htmlmin = require('gulp-htmlmin'),
-        cleanCSS = require('gulp-clean-css'),
+        // cleanCSS = require('gulp-clean-css'),
         browserSync = require('browser-sync'),
         historyApiFallback = require('connect-history-api-fallback'),
         pump = require('pump'),
-        karma = require('karma'),
-        reload = browserSync.reload;
+        Server = require('karma').Server;
+    reload = browserSync.reload;
 
     var cleancssOptions = {
         compatibility: 'ie8'
@@ -19,7 +19,7 @@
     gulp.task('styles', function() {
         gulp.src('app/styles/style.scss')
             .pipe(sass().on('error', sass.logError))
-            .pipe(cleanCSS(cleancssOptions))
+            // .pipe(cleanCSS(cleancssOptions))
             .pipe(gulp.dest('./public/'))
             .pipe(browserSync.stream());
     });
@@ -41,11 +41,11 @@
         );
     });
 
-    gulp.task('test', function(cb) {
-        runKarma('karma.conf.js', {
-            autoWatch: true,
-            singleRun: false
-        }, cb);
+    gulp.task('test', function(done) {
+        new Server({
+            configFile: __dirname + '/karma.conf.js',
+            singleRun: true
+        }, done).start();
     });
 
     gulp.task('serve', ['styles', 'htmlmin', 'uglify', 'test'], function() {

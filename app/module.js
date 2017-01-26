@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('forecastApp', []);
+var forecast = angular.module('forecastApp', []);
