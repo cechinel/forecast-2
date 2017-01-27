@@ -2,24 +2,22 @@
     'use strict'
 
     var gulp = require('gulp'),
+        pump = require('pump'),
         sass = require('gulp-sass'),
         uglify = require('gulp-uglify'),
+        Server = require('karma').Server,
         htmlmin = require('gulp-htmlmin'),
-        // cleanCSS = require('gulp-clean-css'),
         browserSync = require('browser-sync'),
         historyApiFallback = require('connect-history-api-fallback'),
-        pump = require('pump'),
-        Server = require('karma').Server;
-    reload = browserSync.reload;
+        reload = browserSync.reload;
 
     var cleancssOptions = {
         compatibility: 'ie8'
     };
 
     gulp.task('styles', function() {
-        gulp.src('app/styles/style.scss')
+        gulp.src('app/style/style.scss')
             .pipe(sass().on('error', sass.logError))
-            // .pipe(cleanCSS(cleancssOptions))
             .pipe(gulp.dest('./public/'))
             .pipe(browserSync.stream());
     });
@@ -48,7 +46,7 @@
         }, done).start();
     });
 
-    gulp.task('serve', ['styles', 'htmlmin', 'uglify', 'test'], function() {
+    gulp.task('serve', ['styles', 'htmlmin', 'uglify'], function() {
         browserSync({
             server: {
                 baseDir: './',
@@ -58,10 +56,10 @@
             },
             port: 3000
         });
-        gulp.watch("app/styles/style.scss", ['styles']);
+        gulp.watch("app/style/style.scss", ['styles']);
         gulp.watch("app/index.html", ['htmlmin']);
-        gulp.watch("app/js/*.js", ['uglify', 'test']);
-        gulp.watch(['app/index.html', 'app/js/*.js', 'app/styles/style.scss']).on('change', browserSync.reload);
+        gulp.watch("app/js/*.js", ['uglify']);
+        gulp.watch(['app/index.html', 'app/js/*.js', 'app/style/style.scss']).on('change', browserSync.reload);
     });
 
     gulp.task('default', ['serve']);
