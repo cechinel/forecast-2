@@ -43,7 +43,9 @@
         new Server({
             configFile: __dirname + '/karma.conf.js',
             singleRun: true
-        }, done).start();
+        }, function() {
+            done();
+        }).start();
     });
 
     gulp.task('serve', ['styles', 'htmlmin', 'uglify'], function() {
