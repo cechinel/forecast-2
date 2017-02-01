@@ -4,6 +4,8 @@
     var gulp = require('gulp'),
         pump = require('pump'),
         sass = require('gulp-sass'),
+        concat = require('gulp-concat'),
+        rename = require("gulp-rename"),
         uglify = require('gulp-uglify'),
         Server = require('karma').Server,
         htmlmin = require('gulp-htmlmin'),
@@ -29,10 +31,17 @@
             .pipe(browserSync.stream());
     });
 
+    gulp.task('concat', function() {
+        return gulp.src('app/js/**/*.js')
+            .pipe(concat('scripts.js'))
+            .pipe(gulp.dest('public'));
+    });
+
     gulp.task('uglify', function(cb) {
         pump([
-                gulp.src('app/js/*.js'),
+                gulp.src('public/*.js'),
                 uglify(),
+                rename({ suffix: '.min' }),
                 gulp.dest('public')
             ],
             cb
@@ -48,7 +57,7 @@
         }).start();
     });
 
-    gulp.task('serve', ['styles', 'htmlmin', 'uglify'], function() {
+    gulp.task('serve', ['styles', 'htmlmin', 'concat', 'uglify'], function() {
         browserSync({
             server: {
                 baseDir: './',
@@ -60,8 +69,9 @@
         });
         gulp.watch("app/style/style.scss", ['styles']);
         gulp.watch("app/index.html", ['htmlmin']);
-        gulp.watch("app/js/*.js", ['uglify']);
-        gulp.watch(['app/index.html', 'app/js/*.js', 'app/style/style.scss']).on('change', browserSync.reload);
+        gulp.watch("app/js/**/*.js", ['concat']);
+        gulp.watch("app/js/**/*.js", ['uglify']);
+        gulp.watch(['app/index.html', 'app/js/**/*.js', 'app/style/style.scss']).on('change', browserSync.reload);
     });
 
     gulp.task('default', ['serve']);

@@ -12,13 +12,12 @@
     <link rel="stylesheet" href="public/style.css">
 </head>
 
-<body>
+<body ng-controller="ForecastController as vm" ng-cloak>
+    <div ui-view></div>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="public/scripts.min.js"></script>
 </body>
-<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="public/module.js"></script>
-<!-- <script type="text/javascript" src="public/forecastService.js"></script> -->
-<!-- <script type="text/javascript" src="public/ForecastController.js"></script> -->
 
 </html>
