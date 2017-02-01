@@ -32,7 +32,15 @@
     });
 
     gulp.task('concat', function() {
-        return gulp.src('app/js/**/*.js')
+        gulp.src([
+                'node_modules/jquery/dist/jquery.min.js',
+                'node_modules/angular/angular.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.min.js'
+            ])
+            .pipe(concat('libs.min.js'))
+            .pipe(gulp.dest('public'));
+
+        gulp.src('app/js/**/*.js')
             .pipe(concat('scripts.js'))
             .pipe(gulp.dest('public'));
     });
