@@ -39,7 +39,7 @@
 
     gulp.task('uglify', function(cb) {
         pump([
-                gulp.src('public/*.js'),
+                gulp.src('public/scripts.js'),
                 uglify(),
                 rename({ suffix: '.min' }),
                 gulp.dest('public')
